@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "allow": [
+      "Bash(./node_modules/.bin/tsc --noEmit)",
+      "Bash(./node_modules/.bin/tsc:*)",
+      "Bash(pnpm install)",
+      "Bash(pnpm dev)",
+      "Bash(pnpm prisma contract emit)",
+      "Bash(pnpm prisma contract format)",
+      "Bash(pnpm prisma contract print:*)",
+      "Bash(pnpm prisma migration status)",
+      "Bash(pnpm prisma migration list)",
+      "Bash(pnpm prisma migration plan:*)",
+      "Bash(pnpm prisma db verify:*)",
+      "Bash(pnpm prisma db schema:*)",
+      "Bash(git status:*)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)"
+    ],
+    "ask": [
+      "Bash(pnpm prisma db migrate:*)",
+      "Bash(pnpm prisma db update:*)",
+      "Bash(pnpm prisma db init:*)",
+      "Bash(pnpm prisma skills:*)",
+      "Bash(pnpm add:*)",
+      "Bash(pnpm remove:*)"
+    ],
+    "deny": [
+      "Read(./src/config/.env)",
+      "Read(./.env)"
+    ]
+  }
+}

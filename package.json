@@ -1,0 +1,61 @@
+{
+  "name": "Owee",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "dev": "tsx watch src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "contract:emit": "prisma contract emit"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "12.8.1",
+      "onFail": "download"
+    }
+  },
+  "packageManager": "pnpm@12.8.1",
+  "type": "module",
+  "dependencies": {
+    "@hapi/boom": "^10.0.1",
+    "@prisma/orm-postgres": "8.0.0-rc.18",
+    "awilix": "^13.0.5",
+    "better-auth": "^1.7.10",
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.5",
+    "express": "^5.2.1",
+    "pg": "^8.23.1",
+    "swagger-jsdoc": "^6.3.0",
+    "swagger-ui-express": "^5.0.1",
+    "zod": "^4.6.5"
+  },
+  "devDependencies": {
+    "@prisma/cli-engine": "0.6.2",
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/node": "^26.6.4",
+    "@types/pg": "^8.23.1",
+    "@types/swagger-jsdoc": "^6.0.4",
+    "@types/swagger-ui-express": "^4.1.8",
+    "prisma": "8.0.0-rc.23",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  },
+  "imports": {
+    "#config/*": "./src/config/*",
+    "#container/*": "./src/infrastructure/container/*",
+    "#prisma/*": "./src/infrastructure/database/prisma/*",
+    "#routes/*": "./src/routes/*",
+    "#domain/*": "./src/domain/*",
+    "#infrastructure/*": "./src/infrastructure/*",
+    "#docs/*": "./src/infrastructure/docs/*",
+    "#modules/*": "./src/modules/*",
+    "#auth/*": "./src/modules/auth/*",
+    "#debt/*": "./src/modules/debt/*"
+  }
+}
