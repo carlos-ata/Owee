@@ -9,6 +9,33 @@ export default function createBalanceRouter(
 ) {
   const router: Router = Router();
 
+  /**
+   * @openapi
+   * /balance:
+   *   get:
+   *     tags: [Balance]
+   *     summary: Obtener el saldo del usuario autenticado
+   *     description: >
+   *       Suma las deudas activas y confirmadas del usuario: `receivable` es lo que le
+   *       deben, `payable` es lo que debe. `count` es la cantidad de deudas detrás de
+   *       cada monto.
+   *     security:
+   *       - cookieAuth: []
+   *     responses:
+   *       200:
+   *         description: Saldo calculado
+   *         content:
+   *           application/json:
+   *             schema:
+   *               allOf:
+   *                 - $ref: '#/components/schemas/ApiSuccess'
+   *                 - type: object
+   *                   properties:
+   *                     data:
+   *                       $ref: '#/components/schemas/BalanceResponse'
+   *       401:
+   *         $ref: '#/components/responses/Unauthorized'
+   */
   router.get("/", authenticate, controller.getBalance);
 
   return router;

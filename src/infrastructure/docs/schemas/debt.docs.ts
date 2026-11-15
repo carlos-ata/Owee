@@ -15,19 +15,25 @@
  *       properties:
  *         debt:
  *           type: object
- *           required: [debtorId, description, amount]
+ *           required: [type, description, amount]
  *           properties:
- *             debtorId:
+ *             type:
  *               type: string
- *               description: Usuario que debe. Tú tienes que ser el deudor o el acreedor.
- *               example: "uR8xK2mQ0pLzN4vT"
- *             creditorId:
- *               type: string
- *               nullable: true
+ *               enum: [PAYABLE, RECEIVABLE]
  *               description: >
- *                 Usuario al que se le debe. Omítelo o mándalo en `null` para registrar
- *                 una deuda personal con alguien que no está en Owee; en ese caso la
- *                 deuda nace confirmada porque no hay contraparte que la acepte.
+ *                 `PAYABLE`: el usuario autenticado es el deudor y `partyId` (si se
+ *                 envía) es el acreedor. `RECEIVABLE`: el usuario autenticado es el
+ *                 acreedor y `partyId` es obligatorio (es el deudor).
+ *               example: "PAYABLE"
+ *             partyId:
+ *               type: string
+ *               minLength: 1
+ *               description: >
+ *                 Id de la contraparte. Obligatorio cuando `type` es `RECEIVABLE`.
+ *                 Cuando `type` es `PAYABLE` se puede omitir para registrar una deuda
+ *                 personal con alguien que no está en Owee; en ese caso la deuda nace
+ *                 confirmada porque no hay contraparte que la acepte. No puede ser el
+ *                 id del propio usuario autenticado.
  *               example: "a7Fd3LpW9sYbC1qH"
  *             description:
  *               type: string
@@ -37,8 +43,8 @@
  *             amount:
  *               type: string
  *               description: >
- *                 Monto como cadena decimal, máximo 10 dígitos enteros y 2 decimales.
- *                 Se envía como texto para no perder precisión.
+ *                 Monto como cadena decimal, máximo 10 dígitos enteros y 2 decimales,
+ *                 mayor a 0. Se envía como texto para no perder precisión.
  *               pattern: '^\d{1,10}(\.\d{1,2})?$'
  *               example: "150.50"
  *

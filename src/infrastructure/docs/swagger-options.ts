@@ -18,6 +18,7 @@ export default {
     tags: [
       { name: "Auth", description: "Registro, inicio y cierre de sesión" },
       { name: "Debt", description: "Deudas: crear, confirmar, cancelar" },
+      { name: "Balance", description: "Saldo del usuario autenticado" },
     ],
     components: {
       securitySchemes: {

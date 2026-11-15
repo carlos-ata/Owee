@@ -5,7 +5,7 @@ export function debtCreateToDomainMapper(
   data: DebtCreateSchema,
 ): DebtCreateDTO {
   return {
-    partyId: data.debt.partyId,
+    partyId: data.debt.partyId ?? null,
     type: data.debt.type,
     description: data.debt.description,
     amount: data.debt.amount,

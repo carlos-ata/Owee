@@ -18,10 +18,11 @@ export default function createDebtRouter(controller: ExpressDebtController) {
    *     tags: [Debt]
    *     summary: Registrar una deuda
    *     description: >
-   *       Crea una deuda en la que el usuario autenticado debe ser el deudor o el
-   *       acreedor. Si se envía `creditorId`, la deuda queda pendiente de que la
-   *       contraparte la confirme (`isConfirmed = null`); si se omite, se trata de una
-   *       deuda personal y nace confirmada.
+   *       Crea una deuda en la que el usuario autenticado es el deudor (`type:
+   *       PAYABLE`) o el acreedor (`type: RECEIVABLE`). Si se envía `partyId`, la
+   *       deuda queda pendiente de que la contraparte la confirme (`isConfirmed =
+   *       null`); si se omite (solo permitido con `PAYABLE`), se trata de una deuda
+   *       personal y nace confirmada.
    *     security:
    *       - cookieAuth: []
    *     requestBody:
@@ -45,9 +46,9 @@ export default function createDebtRouter(controller: ExpressDebtController) {
    *                       $ref: '#/components/schemas/DebtIdentityResponse'
    *       400:
    *         description: >
-   *           El cuerpo no pasó la validación de Zod, o violó una regla de negocio
-   *           (deudor y acreedor son el mismo usuario, o el usuario autenticado no es
-   *           ni el deudor ni el acreedor).
+   *           El cuerpo no pasó la validación de Zod, o violó una regla de negocio:
+   *           `partyId` es obligatorio cuando `type` es `RECEIVABLE`, o `partyId` es
+   *           el mismo id que el del usuario autenticado.
    *         content:
    *           application/json:
    *             schema:
@@ -57,7 +58,7 @@ export default function createDebtRouter(controller: ExpressDebtController) {
    *       401:
    *         $ref: '#/components/responses/Unauthorized'
    *       404:
-   *         description: El usuario deudor o el acreedor no existe
+   *         description: El usuario de la otra parte (`partyId`) no existe
    *         content:
    *           application/json:
    *             schema:
