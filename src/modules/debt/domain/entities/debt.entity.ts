@@ -57,6 +57,13 @@ export interface DebtCancelData {
   updatedAt: string;
 }
 
+export const DebtType = {
+  PAYABLE: "PAYABLE",
+  RECEIVABLE: "RECEIVABLE",
+} as const;
+
+export type DebtType = (typeof DebtType)[keyof typeof DebtType];
+
 export type DebtStatus = "A" | "I";
 
 export class Debt {

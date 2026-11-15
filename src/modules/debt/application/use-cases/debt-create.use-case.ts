@@ -3,7 +3,7 @@ import type { IAuthRepository } from "#auth/domain/repositories/auth.repository.
 import { error } from "#domain/errors/app-error.js";
 
 import type { User } from "#auth/domain/entities/user.entity.js";
-import { Debt } from "#debt/domain/entities/debt.entity.js";
+import { Debt, DebtType } from "#debt/domain/entities/debt.entity.js";
 import type { DebtCreateDTO } from "#debt/application/dto/debt-create.dto.js";
 
 interface Deps {
@@ -21,35 +21,40 @@ export default class DebtCreateUseCase {
   }
 
   async execute(user: User, data: DebtCreateDTO): Promise<Debt> {
-    const validDebtorUser = await this.authRepository.findById(data.debtorId);
-    if (!validDebtorUser) {
-      throw error.notFound("El usuario deudor no existe");
+    if (data.type === DebtType.RECEIVABLE && !data.partyId) {
+      throw error.badRequest("El id de la parte es obligatorio");
     }
 
-    if (data.creditorId) {
-      const validCreditorUser = await this.authRepository.findById(
-        data.creditorId,
-      );
-      if (!validCreditorUser) {
-        throw error.notFound("El usuario acreedor no existe");
-      }
-      const isDebtorCreditorSameUser =
-        validDebtorUser.id === validCreditorUser.id;
-      if (isDebtorCreditorSameUser) {
+    if (data.partyId) {
+      if (data.partyId === user.id)
         throw error.badRequest(
-          "El usuario deudor y acreedor no pueden ser el mismo",
+          "El id de la parte no puede ser el mismo que el del creador",
         );
-      }
+
+      const validPartyUser = await this.authRepository.findById(data.partyId);
+      if (!validPartyUser)
+        throw error.notFound("El usuario de la otra parte no existe");
     }
 
-    const isUserInDebtorCreditor = [data.debtorId, data.creditorId].includes(
-      user.id,
-    );
-    if (!isUserInDebtorCreditor) {
-      throw error.badRequest("El usuario no es deudor ni acreedor");
+    let debtorId: string;
+    let creditorId: string | null;
+
+    if (data.type === DebtType.PAYABLE) {
+      debtorId = user.id;
+      creditorId = data.partyId;
+    } else if (data.type === DebtType.RECEIVABLE) {
+      debtorId = data.partyId!;
+      creditorId = user.id;
+    } else {
+      throw error.badRequest("Tipo de deuda inválido");
     }
 
-    const debt = Debt.create({ ...data, creatorId: user.id });
+    const debt = Debt.create({
+      ...data,
+      creatorId: user.id,
+      debtorId,
+      creditorId,
+    });
     const resDebt = await this.debtRepository.create(debt);
     return resDebt;
   }
