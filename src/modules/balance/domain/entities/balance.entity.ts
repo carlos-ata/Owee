@@ -1,13 +1,13 @@
 export interface BalanceProps {
-  payableAmount: number;
-  receivableAmount: number;
+  payableAmount: string;
+  receivableAmount: string;
   payableCount: number;
   receivableCount: number;
 }
 
 export class Balance {
-  payableAmount: number;
-  receivableAmount: number;
+  payableAmount: string;
+  receivableAmount: string;
   payableCount: number;
   receivableCount: number;
 

@@ -18,6 +18,7 @@ import DebtCreateUseCase from "#modules/debt/application/use-cases/debt-create.u
 import DebtCancelUseCase from "#modules/debt/application/use-cases/debt-cancel.use-case.js";
 import DebtConfirmUseCase from "#modules/debt/application/use-cases/debt-confirm.use-case.js";
 import BalanceGetUseCase from "#modules/balance/application/use-cases/balance-get.use-case.js";
+import CounterpartyBalanceGetUseCase from "#modules/balance/application/use-cases/counterparty-balance-get.use-case.js";
 
 import ExpressAuthController from "#modules/auth/infrastructure/http/auth.controller.js";
 import ExpressDebtController from "#modules/debt/infrastructure/http/debt.controller.js";
@@ -38,6 +39,7 @@ interface Cradle {
   debtCancelUseCase: DebtCancelUseCase;
   debtConfirmUseCase: DebtConfirmUseCase;
   balanceGetUseCase: BalanceGetUseCase;
+  counterpartyBalanceGetUseCase: CounterpartyBalanceGetUseCase;
 
   authController: ExpressAuthController;
   debtController: ExpressDebtController;
@@ -65,6 +67,9 @@ container.register({
   debtCancelUseCase: asClass(DebtCancelUseCase).singleton(),
   debtConfirmUseCase: asClass(DebtConfirmUseCase).singleton(),
   balanceGetUseCase: asClass(BalanceGetUseCase).singleton(),
+  counterpartyBalanceGetUseCase: asClass(
+    CounterpartyBalanceGetUseCase,
+  ).singleton(),
 
   authController: asClass(ExpressAuthController).singleton(),
   debtController: asClass(ExpressDebtController).singleton(),

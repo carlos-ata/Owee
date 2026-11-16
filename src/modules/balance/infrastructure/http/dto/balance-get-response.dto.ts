@@ -1,6 +1,6 @@
 import type { Balance } from "#balance/domain/entities/balance.entity.js";
 
-export function balanceGetToResponseMapper(data: Balance) {
+export function balanceGetToResponseDto(data: Balance) {
   return {
     receivable: {
       amount: data.receivableAmount,
